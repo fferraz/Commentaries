@@ -36,7 +36,7 @@
           <button v-on:click="addComment" type="submit" class="btn btn-primary"> Comment </button>
         </div>
         <div class="list-group">
-          <div class="list-group-item" v-for="(comment, index) in comments">
+          <div class="list-group-item" v-for="(comment, index) in allComments">
             <span class="comment__author"> Author: <strong>{{comment.name}}</strong></span>
             <p> {{comment.message}} </p>
             <div>
@@ -56,7 +56,7 @@
       },
       methods:{
         addComment(){
-          if(this.name.trim() === '' || this.message.trim() === ''){
+          if(this.message.trim() === ''){
             return;
           }
           //console.log(this.comments[0].name);
@@ -72,7 +72,17 @@
         }
       },
       computed:  {
-        
+        allComments(){
+          return this.comments.map(comment => ({
+            ... comment,
+            name: comment.name.trim() === '' ? 'Anonymous' : comment.name
+          }))
+        }
+      },
+      watch:{
+        comments(val){
+          console.log('val',val)
+        }
       }
 
       }).mount('#app');
